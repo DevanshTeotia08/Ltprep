@@ -3,9 +3,10 @@ import axios from "axios";
 const api = axios.create({
   baseURL:
     import.meta.env.MODE === "development"
-      ? "http://localhost:5000/api" // ✅ Local server
-      : "https://ltprep.onrender.com/api", // ✅ Deployed server
+      ? "http://localhost:5000/api"
+      : "http://ltprep.com/api", // points to VPS backend
 });
+
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
