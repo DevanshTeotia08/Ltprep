@@ -10,7 +10,7 @@ const PDF_URL = "https://drive.google.com/file/d/1rxtRMx1KNepEtOidc1P5brMF2cqCQ1
 const QUESTION_IMAGE_URL =
   "https://images.unsplash.com/photo-1608792992053-f397e328a56d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWF0aHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=1000";
 
-const MONGO_URI = "................"
+const MONGO_URI = "mongodb+srv://dc0485_db_user:Uh8awZC7kjaqTjWB@cluster0.ewzu0jo.mongodb.net/?appName=Cluster0"
 
 // ==========================
 // 🧮 Utility Generators
