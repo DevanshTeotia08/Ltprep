@@ -3,8 +3,8 @@ import axios from "axios";
 const api = axios.create({
   baseURL:
     import.meta.env.MODE === "development"
-      ? "http://localhost:5000/api"
-      : "http://api.ltprep.com/api", // points to VPS backend
+      ? "https://localhost:5000/api"
+      : "https://api.ltprep.com/api", // points to VPS backend
 });
 
 
