@@ -2,15 +2,22 @@ import mongoose from "mongoose";
 import Subject from "./models/Subject.js";
 import Chapter from "./models/Chapter.js";
 import Question from "./models/Question.js";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
 
 // ==========================
 // 🔗 Constants
 // ==========================
-const PDF_URL = "https://drive.google.com/file/d/1rxtRMx1KNepEtOidc1P5brMF2cqCQ1zF/view";
+const PDF_URL =
+  "https://drive.google.com/file/d/1rxtRMx1KNepEtOidc1P5brMF2cqCQ1zF/view";
+
 const QUESTION_IMAGE_URL =
   "https://images.unsplash.com/photo-1608792992053-f397e328a56d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWF0aHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=1000";
 
-const MONGO_URI = ""
+// ✅ Correct URI from environment
+const MONGO_URI = process.env.MONGO_URI;
 
 // ==========================
 // 🧮 Utility Generators
@@ -21,8 +28,16 @@ const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 // Random topic pool
 const topics = [
-  "Algebra", "Geometry", "Trigonometry", "Calculus", "Physics", "Chemistry",
-  "Biology", "History", "Geography", "Economics"
+  "Algebra",
+  "Geometry",
+  "Trigonometry",
+  "Calculus",
+  "Physics",
+  "Chemistry",
+  "Biology",
+  "History",
+  "Geography",
+  "Economics",
 ];
 
 // Random question generator
@@ -41,10 +56,8 @@ const randomQuestionText = (type, chapterName) => {
 
 // Random options generator
 const generateOptions = () => {
-  const opts = [
-    "Option A", "Option B", "Option C", "Option D"
-  ];
-  const count = 4 + Math.floor(Math.random() * 3); // between 4 and 6 options
+  const opts = ["Option A", "Option B", "Option C", "Option D"];
+  const count = 4 + Math.floor(Math.random() * 3); // 4–6 options
   return opts.slice(0, count);
 };
 
@@ -74,6 +87,18 @@ const generateQuestions = (chapterId, type, chapterName) => {
 // ==========================
 async function seed() {
   try {
+    // ❗ Hard fail if URI missing
+    if (!MONGO_URI) {
+      console.error("❌ MONGO_URI is not set in the .env file.");
+      process.exit(1);
+    }
+
+    // ❗ Prevent accidental production wipe
+    if (process.env.NODE_ENV === "production") {
+      console.error("❌ Refusing to run seeder in PRODUCTION.");
+      process.exit(1);
+    }
+
     await mongoose.connect(MONGO_URI);
     console.log("✅ Connected to MongoDB");
 
