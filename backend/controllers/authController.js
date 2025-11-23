@@ -10,7 +10,7 @@ const signToken = (user) =>
 
 export const register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password /*, role */ } = req.body;
     if (!name || !email || !password)
       return res.status(400).json({ message: "All fields are required" });
 
@@ -22,7 +22,8 @@ export const register = async (req, res) => {
       name,
       email,
       password,
-      role: role === "admin" ? "admin" : "student",
+      // Prevent privilege escalation: never allow clients to set admin role here
+      role: "student",
     });
 
     const token = signToken(user);
@@ -70,7 +71,7 @@ export const login = async (req, res) => {
 
 export const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
   } catch (err) {
@@ -81,7 +82,7 @@ export const getMe = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.user.id || req.user._id)
       .populate("purchasedSubjects", "name price")
       .select("-password");
 
